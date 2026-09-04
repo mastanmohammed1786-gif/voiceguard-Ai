@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>VoiceGuard AI</title>
+
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     STARTUP SCREEN
+===================================================== -->
+
+<div id="loadingScreen">
+
+
+    <div class="voice-model" aria-hidden="true">
+        <div class="scan-ring"></div>
+        <div class="scan-ring"></div>
+        <div class="scan-line"></div>
+
+        <div class="wave left">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+        </div>
+
+        <div class="voice-core">
+            <div class="mic"></div>
+        </div>
+
+        <div class="wave right">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+        </div>
+
+        <div class="status-orbit"></div>
+    </div>
+
+    <div class="loading-logo">
+        🛡️
+    </div>
+
+
+    <div class="loading-title">
+
+        Voice<span>Guard AI</span>
+
+    </div>
+
+
+    <div class="loading-tagline">
+
+        DETECT. VERIFY. PROTECT.
+
+    </div>
+
+
+    <div class="loading-text">
+
+        Initializing AI Protection...
+
+    </div>
+
+
+    <div class="loading-bar">
+
+        <div class="loading-progress"></div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     APPLICATION
+===================================================== -->
+
+<div class="app">
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar" id="mainSidebar">
+
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            🛡️
+        </div>
+
+        <div class="logo-text">
+            Voice<span>Guard AI</span>
+        </div>
+
+    </div>
+
+
+    <button
+        class="nav-btn active"
+        onclick="showPage('dashboard',this)"
+    >
+
+        <div class="nav-icon">
+            ▦
+        </div>
+
+        <span>
+            Dashboard
+        </span>
+
+    </button>
+
+
+    <button
+        class="nav-btn"
+        onclick="showPage('detector',this)"
+    >
+
+        <div class="nav-icon">
+            🎙️
+        </div>
+
+        <span>
+            Voice Detector
+        </span>
+
+    </button>
+
+
+    <button
+        class="nav-btn"
+        onclick="showPage('generator',this)"
+    >
+
+        <div class="nav-icon">
+            🤖
+        </div>
+
+        <span>
+            GAN Generator
+        </span>
+
+    </button>
+
+
+    <button
+        class="nav-btn"
+        onclick="showPage('history',this)"
+    >
+
+        <div class="nav-icon">
+            🕘
+        </div>
+
+        <span>
+            Detection History
+        </span>
+
+    </button>
+
+
+    <button
+        class="nav-btn settings-nav-btn"
+        onclick="openSettings()"
+        data-tooltip="Settings"
+        aria-label="Settings"
+    >
+
+        <div class="nav-icon">
+            ⚙️
+        </div>
+
+        <span>
+            Settings
+        </span>
+
+    </button>
+
+
+    <div class="system-status">
+
+        <div class="status-dot"></div>
+
+        <span>
+            System Online
+        </span>
+
+    </div>
+
+    <button
+        class="nav-toggle"
+        aria-label="Toggle navigation"
+        onclick="toggleNavMenu()"
+    >
+        ☰
+    </button>
+
+</aside>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main">
+
+
+<header class="topbar">
+
+    <div
+        class="page-title"
+        id="pageTitle"
+    >
+        Dashboard
+    </div>
+
+
+    <div class="top-actions">
+
+        <button
+            class="top-btn"
+            onclick="showToast('Notifications checked')"
+        >
+            🔔
+        </button>
+
+
+        <button
+            class="top-btn"
+            onclick="openSettings()"
+        >
+            ⚙
+        </button>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<section
+    id="dashboard"
+    class="page active"
+>
+
+
+<div class="welcome">
+
+    <h1>
+        Welcome to VoiceGuard AI 🛡️
+    </h1>
+
+    <p>
+
+        Detect AI-generated and cloned voices,
+        verify suspicious audio and protect users
+        from voice impersonation attacks.
+
+    </p>
+
+</div>
+
+
+
+<div class="stats">
+
+
+<div class="stat-card">
+
+    <div class="stat-top">
+
+        <div>
+
+            <div class="stat-label">
+                TOTAL SCANS
+            </div>
+
+            <div
+                class="stat-number"
+                id="totalScans"
+            >
+                0
+            </div>
+
+        </div>
+
+        <div class="stat-icon">
+            🎙️
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="stat-card">
+
+    <div class="stat-top">
+
+        <div>
+
+            <div class="stat-label">
+                THREATS DETECTED
+            </div>
+
+            <div
+                class="stat-number"
+                id="threatsDetected"
+            >
+                0
+            </div>
+
+        </div>
+
+        <div class="stat-icon">
+            ⚠️
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="stat-card">
+
+    <div class="stat-top">
+
+        <div>
+
+            <div class="stat-label">
+                REAL VOICES
+            </div>
+
+            <div
+                class="stat-number"
+                id="realVoices"
+            >
+                0
+            </div>
+
+        </div>
+
+        <div class="stat-icon">
+            ✓
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="stat-card">
+
+    <div class="stat-top">
+
+        <div>
+
+            <div class="stat-label">
+                ACCURACY
+            </div>
+
+            <div class="stat-number">
+                96.8%
+            </div>
+
+        </div>
+
+        <div class="stat-icon">
+            🎯
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+
+<div class="grid-2">
+
+
+<div class="card">
+
+    <div class="card-header">
+
+        <div class="card-title">
+            Detection Overview
+        </div>
+
+        <div class="card-subtitle">
+            Recent scans
+        </div>
+
+    </div>
+
+
+    <div class="chart">
+
+        <div class="bar-wrapper">
+            <div
+                class="bar"
+                style="height:45%"
+            ></div>
+        </div>
+
+        <div class="bar-wrapper">
+            <div
+                class="bar"
+                style="height:65%"
+            ></div>
+        </div>
+
+        <div class="bar-wrapper">
+            <div
+                class="bar"
+                style="height:40%"
+            ></div>
+        </div>
+
+        <div class="bar-wrapper">
+            <div
+                class="bar"
+                style="height:80%"
+            ></div>
+        </div>
+
+        <div class="bar-wrapper">
+            <div
+                class="bar"
+                style="height:60%"
+            ></div>
+        </div>
+
+        <div class="bar-wrapper">
+            <div
+                class="bar"
+                style="height:90%"
+            ></div>
+        </div>
+
+        <div class="bar-wrapper">
+            <div
+                class="bar"
+                style="height:70%"
+            ></div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="card">
+
+    <div class="card-header">
+
+        <div class="card-title">
+            Threat Status
+        </div>
+
+        <div class="card-subtitle">
+            System monitoring
+        </div>
+
+    </div>
+
+
+    <div class="threat">
+
+        <div class="threat-circle">
+            <span>✓</span>
+        </div>
+
+        <h3>
+            System Secure
+        </h3>
+
+        <p>
+            No active voice threats detected
+        </p>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+
+<div
+    class="card"
+    style="margin-top:20px"
+>
+
+    <div class="card-header">
+
+        <div class="card-title">
+            Recent Activity
+        </div>
+
+        <div class="card-subtitle">
+            Latest detections
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>SOURCE</th>
+                    <th>TYPE</th>
+                    <th>CONFIDENCE</th>
+                    <th>STATUS</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="recentTable">
+
+                <tr>
+
+                    <td>
+                        No detections yet
+                    </td>
+
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     VOICE DETECTOR
+===================================================== -->
+
+<section
+    id="detector"
+    class="page"
+>
+
+
+<div class="detector-box">
+
+
+<div class="welcome">
+
+    <h1>
+        Voice Detector
+    </h1>
+
+    <p>
+
+        Record a voice in real time or upload
+        an audio file to analyze whether it is
+        human or AI-generated.
+
+    </p>
+
+</div>
+
+
+
+<div class="input-tabs">
+
+
+<button
+    class="input-tab active"
+    onclick="selectInput('live',this)"
+>
+
+    🎙️ Live Recording
+
+</button>
+
+
+<button
+    class="input-tab"
+    onclick="selectInput('upload',this)"
+>
+
+    📁 Upload Audio
+
+</button>
+
+
+</div>
+
+
+
+<!-- LIVE RECORDING -->
+
+<div
+    id="liveInput"
+    class="recorder"
+>
+
+    <div class="mic-circle">
+        🎙️
+    </div>
+
+
+    <div
+        class="record-status"
+        id="recordStatus"
+    >
+
+        Ready to record
+
+    </div>
+
+
+    <canvas
+        id="visualizer"
+        class="visualizer"
+    ></canvas>
+
+
+    <div class="controls">
+
+
+        <button
+            class="primary-btn"
+            id="recordBtn"
+            onclick="startRecording()"
+        >
+
+            Start Recording
+
+        </button>
+
+
+        <button
+            class="secondary-btn"
+            onclick="stopRecording()"
+        >
+
+            Stop
+
+        </button>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- UPLOAD -->
+
+<div
+    id="uploadInput"
+    class="recorder"
+    style="display:none"
+>
+
+
+<label
+    class="upload-area"
+    for="audioFile"
+>
+
+    <strong>
+        📁 Upload Audio File
+    </strong>
+
+    Click here to select an audio file
+
+    <br>
+
+    <small>
+        WAV, MP3, M4A supported
+    </small>
+
+</label>
+
+
+<input
+    type="file"
+    id="audioFile"
+    class="file-input"
+    accept="audio/*"
+>
+
+
+</div>
+
+
+
+<!-- RESULT -->
+
+<div
+    class="result-card"
+    id="resultCard"
+>
+
+
+<div class="result-header">
+
+
+<div>
+
+    <div class="card-subtitle">
+        DETECTION RESULT
+    </div>
+
+    <div
+        class="result-status"
+        id="resultStatus"
+    >
+        ANALYZING...
+    </div>
+
+</div>
+
+
+<div
+    id="resultIcon"
+    style="font-size:35px"
+>
+    🔍
+</div>
+
+
+</div>
+
+
+
+<div class="confidence">
+
+
+<div class="confidence-label">
+
+    <span>
+        AI Confidence
+    </span>
+
+    <span id="confidenceText">
+        0%
+    </span>
+
+</div>
+
+
+<div class="confidence-bar">
+
+    <div
+        class="confidence-fill"
+        id="confidenceFill"
+    ></div>
+
+</div>
+
+
+</div>
+
+
+
+<div class="metrics">
+
+
+<div class="metric">
+
+    <div class="metric-name">
+        MFCC
+    </div>
+
+    <div
+        class="metric-value"
+        id="mfcc"
+    >
+        --
+    </div>
+
+</div>
+
+
+<div class="metric">
+
+    <div class="metric-name">
+        Pitch Jitter
+    </div>
+
+    <div
+        class="metric-value"
+        id="jitter"
+    >
+        --
+    </div>
+
+</div>
+
+
+<div class="metric">
+
+    <div class="metric-name">
+        Spectral
+    </div>
+
+    <div
+        class="metric-value"
+        id="spectral"
+    >
+        --
+    </div>
+
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     GAN GENERATOR
+===================================================== -->
+
+<section
+    id="generator"
+    class="page"
+>
+
+
+<div class="grid-2">
+
+
+<div class="card">
+
+
+<div class="card-header">
+
+    <div class="card-title">
+        GAN Voice Generator
+    </div>
+
+    <div class="card-subtitle">
+        Generate synthetic voice
+    </div>
+
+</div>
+
+
+
+<div class="form-group">
+
+    <label>
+        TARGET VOICE MODEL
+    </label>
+
+
+    <select id="voiceModel">
+
+        <option>
+            Generic Voice Model
+        </option>
+
+        <option>
+            Male Voice Model
+        </option>
+
+        <option>
+            Female Voice Model
+        </option>
+
+        <option>
+            Neural Voice Model
+        </option>
+
+    </select>
+
+</div>
+
+
+
+<div class="form-group">
+
+    <label>
+        AUDIO INPUT
+    </label>
+
+    <div class="controls">
+
+        <label
+            class="secondary-btn"
+            for="generatorAudioFile"
+        >
+
+            Select Audio
+
+        </label>
+
+        <input
+            type="file"
+            id="generatorAudioFile"
+            class="file-input"
+            accept="audio/*"
+        >
+
+        <button
+            class="secondary-btn"
+            type="button"
+            id="generatorRecordBtn"
+            onclick="startGeneratorRecording()"
+        >
+
+            Record Audio
+
+        </button>
+
+        <button
+            class="secondary-btn"
+            type="button"
+            id="generatorStopBtn"
+            onclick="stopGeneratorRecording()"
+            disabled
+        >
+
+            Stop
+
+        </button>
+
+    </div>
+
+    <audio
+        id="generatorAudioPreview"
+        controls
+        style="display:none;width:100%;margin-top:12px"
+    ></audio>
+
+    <div
+        class="controls"
+        id="generatorAudioControls"
+        style="display:none"
+    >
+
+        <button
+            class="secondary-btn"
+            type="button"
+            onclick="playGeneratorAudio()"
+        >
+
+            Play
+
+        </button>
+
+        <button
+            class="secondary-btn"
+            type="button"
+            onclick="stopGeneratorAudio()"
+        >
+
+            Stop
+
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<div class="form-group">
+
+    <label>
+        TEXT SCRIPT
+    </label>
+
+
+    <textarea
+        id="voiceScript"
+        placeholder="Enter the text that should be converted into synthetic voice..."
+    ></textarea>
+
+</div>
+
+
+
+<button
+    class="primary-btn"
+    onclick="generateVoice()"
+>
+
+    🤖 Generate Synthetic Voice
+
+</button>
+
+
+
+<div
+    class="generator-result"
+    id="generatorResult"
+>
+
+    <strong>
+        Synthetic Voice Generated
+    </strong>
+
+
+    <p
+        style="
+        color:#94a3b8;
+        font-size:12px;
+        margin-top:8px;
+        "
+    >
+
+        The synthetic audio is ready
+        for testing.
+
+    </p>
+
+
+    <button
+        class="secondary-btn"
+        style="margin-top:15px"
+        onclick="testGeneratedVoice()"
+    >
+
+        Test with Detector
+
+    </button>
+
+</div>
+
+
+</div>
+
+
+
+<div class="card">
+
+
+<div class="card-header">
+
+    <div class="card-title">
+        GAN Pipeline
+    </div>
+
+</div>
+
+
+<div
+    style="
+    line-height:2.5;
+    color:#94a3b8
+    "
+>
+
+
+<div>
+
+    🧠
+
+    <strong style="color:white">
+        Generator
+    </strong>
+
+    — Creates synthetic audio
+
+</div>
+
+
+<div>
+    ↓
+</div>
+
+
+<div>
+
+    🔊
+
+    <strong style="color:white">
+        Synthetic Voice
+    </strong>
+
+    — AI generated sample
+
+</div>
+
+
+<div>
+    ↓
+</div>
+
+
+<div>
+
+    🛡️
+
+    <strong style="color:white">
+        Discriminator
+    </strong>
+
+    — Analyzes audio
+
+</div>
+
+
+<div>
+    ↓
+</div>
+
+
+<div>
+
+    🎯
+
+    <strong style="color:white">
+        Prediction
+    </strong>
+
+    — REAL / FAKE
+
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     HISTORY
+===================================================== -->
+
+<section
+    id="history"
+    class="page"
+>
+
+
+<div class="card">
+
+
+<div class="card-header">
+
+    <div class="card-title">
+        Detection History
+    </div>
+
+
+    <button
+        class="secondary-btn"
+        onclick="clearHistory()"
+    >
+
+        Clear History
+
+    </button>
+
+</div>
+
+
+
+<div class="table-container">
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+    <th>TIME</th>
+    <th>SOURCE</th>
+    <th>TYPE</th>
+    <th>CONFIDENCE</th>
+    <th>STATUS</th>
+    <th>VOICE</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="historyTable">
+
+<tr>
+
+    <td colspan="6">
+        No detection history
+    </td>
+
+</tr>
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+</div>
+
+</section>
+
+
+</main>
+
+</div>
+
+
+
+<!-- =====================================================
+     SETTINGS
+===================================================== -->
+
+<div
+    class="settings-overlay"
+    id="settingsOverlay"
+    onclick="closeOutside(event)"
+>
+
+
+<div class="settings-box">
+
+
+<div class="settings-header">
+
+    <h2>
+        Settings
+    </h2>
+
+
+    <button
+        class="close-btn"
+        onclick="closeSettings()"
+    >
+        ×
+    </button>
+
+</div>
+
+
+
+<div class="setting-row">
+
+
+<div class="setting-info">
+
+    <strong>
+        Language
+    </strong>
+
+    <span>
+        Detection interface language
+    </span>
+
+</div>
+
+
+<select
+    style="width:130px"
+    id="language"
+    aria-label="Select website language"
+>
+
+    <option value="en">
+        🌐 English
+    </option>
+
+    <option value="hi">
+        🇮🇳 हिन्दी (Hindi)
+    </option>
+
+    <option value="te">
+        🇮🇳 తెలుగు (Telugu)
+    </option>
+
+</select>
+
+
+</div>
+
+
+
+<div class="setting-row">
+
+
+<div class="setting-info">
+
+    <strong>
+        Voice
+    </strong>
+
+    <span>
+        Notification voice
+    </span>
+
+</div>
+
+
+<select
+    style="width:130px"
+    id="voice"
+>
+
+    <option>
+        Default
+    </option>
+
+    <option>
+        Male
+    </option>
+
+    <option>
+        Female
+    </option>
+
+</select>
+
+
+</div>
+
+
+
+<div class="setting-row">
+
+
+<div class="setting-info">
+
+    <strong>
+        Volume
+    </strong>
+
+    <span>
+        Alert volume
+    </span>
+
+</div>
+
+
+<input
+    type="range"
+    min="0"
+    max="100"
+    value="70"
+    id="volume"
+>
+
+
+</div>
+
+
+
+<div class="setting-row">
+
+
+<div class="setting-info">
+
+    <strong>
+        Detection Sensitivity
+    </strong>
+
+    <span>
+        Fake voice detection sensitivity
+    </span>
+
+</div>
+
+
+<input
+    type="range"
+    min="0"
+    max="100"
+    value="65"
+    id="sensitivity"
+>
+
+
+</div>
+
+
+
+<div class="setting-row">
+
+
+<div class="setting-info">
+
+    <strong>
+        Alerts
+    </strong>
+
+    <span>
+        Show threat alerts
+    </span>
+
+</div>
+
+
+<div
+    class="toggle active"
+    onclick="toggleSetting(this)"
+></div>
+
+
+</div>
+
+
+
+<div class="setting-row">
+
+
+<div class="setting-info">
+
+    <strong>
+        Notifications
+    </strong>
+
+    <span>
+        Enable detection notifications
+    </span>
+
+</div>
+
+
+<div
+    class="toggle active"
+    onclick="toggleSetting(this)"
+></div>
+
+
+</div>
+
+
+
+<div class="setting-row">
+
+
+<div class="setting-info">
+
+    <strong>
+        Show Confidence
+    </strong>
+
+    <span>
+        Display AI confidence score
+    </span>
+
+</div>
+
+
+<div
+    class="toggle active"
+    onclick="toggleSetting(this)"
+></div>
+
+
+</div>
+
+
+
+<div class="setting-row">
+
+
+<div class="setting-info">
+
+    <strong>
+        Privacy Mode
+    </strong>
+
+    <span>
+        Process audio temporarily
+    </span>
+
+</div>
+
+
+<div
+    class="toggle active"
+    onclick="toggleSetting(this)"
+></div>
+
+
+</div>
+
+
+
+<div
+    style="
+    margin-top:25px;
+    display:flex;
+    gap:10px
+    "
+>
+
+
+<button
+    class="secondary-btn"
+    onclick="clearAudio()"
+>
+
+    Clear Temporary Audio
+
+</button>
+
+
+<button
+    class="secondary-btn"
+    onclick="resetSettings()"
+>
+
+    Reset
+
+</button>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+    class="toast"
+    id="toast"
+>
+    Message
+</div>
+
+
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
